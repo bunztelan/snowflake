@@ -151,7 +151,7 @@ class TabIcon extends React.Component {
  */
 
 export default function native (platform) {
-  let Snowflake = React.createClass({
+  let Proofn = React.createClass({
     render () {
       const store = configureStore(getInitialState())
 
@@ -199,14 +199,14 @@ export default function native (platform) {
                 default='Main'>
 
                 <Scene key='Logout'
-                  title={I18n.t('Snowflake.logout')}
+                  title={I18n.t('Proofn.logout')}
                   icon={TabIcon}
                   iconName={'sign-out'}
                   hideNavBar
                   component={Logout} />
 
                 <Scene key='Main'
-                  title={I18n.t('Snowflake.main')}
+                  title={I18n.t('Proofn.main')}
                   iconName={'home'}
                   icon={TabIcon}
                   hideNavBar
@@ -230,5 +230,5 @@ export default function native (platform) {
      * registerComponent to the AppRegistery and off we go....
      */
 
-  AppRegistry.registerComponent('snowflake', () => Snowflake)
+  AppRegistry.registerComponent('Proofn', () => Proofn)
 }

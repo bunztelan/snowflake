@@ -52,9 +52,3 @@ android/app/libs
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
-
-# Jest test coverage
-coverage
-
-# app configuration
-src/lib/config.js
