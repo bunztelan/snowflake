@@ -25,19 +25,21 @@ import * as globalActions from '../reducers/global/globalActions'
 /**
  * The components we need from ReactNative
  */
-import React from 'react'
-import
-{
-    StyleSheet,
-    View,
-    Text
-}
-from 'react-native'
-
+import React,{Component} from 'react'
+import {StyleSheet, View, Dimensions, Image, Text} from 'react-native';
+import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 /**
  * The Header will display a Image and support Hot Loading
  */
-import Header from '../components/Header'
+import type { ViewPagerScrollState } from 'ViewPagerAndroid';
+var PAGES = 4;
+var BGCOLOR = '#ffffff';
+var IMAGE_URIS = [
+  require("../images/tour/guide1.png"),
+  require("../images/tour/guide2.png"),
+  require("../images/tour/guide3.png"),
+  require("../images/tour/guide4.png")
+];
 
 /**
  *  Save that state
@@ -66,20 +68,6 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-var styles = StyleSheet.create({
-  container: {
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    marginTop: 80,
-    padding: 10
-  },
-  summary: {
-    fontFamily: 'BodoniSvtyTwoITCTT-Book',
-    fontSize: 18,
-    fontWeight: 'bold'
-  }
-})
-
 /**
  * ## App class
  */
@@ -92,39 +80,85 @@ var I18n = require('react-native-i18n')
 import Translations from '../lib/Translations'
 I18n.translations = Translations
 
-let App = React.createClass({
-    /**
-     * See if there's a sessionToken from a previous login
-     *
-     */
-  componentDidMount () {
-        // Use a timer so App screen is displayed
-    this.setTimeout(
-            () => {
-              this.props.actions.getSessionToken()
-            },
-            2500
-        )
-  },
 
-  render () {
-    return (
-      <View style={styles.container}>
-        <Header isFetching={this.props.auth.form.isFetching}
-          showState={this.props.global.showState}
-          currentState={this.props.global.currentState}
-          onGetState={this.props.actions.getState}
-          onSetState={this.props.actions.setState} />
+/**
+ * ProofnTour Class
+ */
 
-        <Text style={styles.summary}>Snowflake {I18n.t('App.version')}:{this.props.deviceVersion}</Text>
+export class ProofnTour extends Component {
+    render() {
+        var pages = [];
+         for (var i = 0; i < PAGES; i++) {
+           var pageStyle = {
 
-      </View>
-    )
-  }
-})
-// Since we're using ES6 classes, have to define the TimerMixin
-reactMixin(App.prototype, TimerMixin)
+           };
+           pages.push(
+             <View key={i} style={styles.pageStyle} collapsable={false}>
+               <Image resizeMode = 'cover' style = {styles.image}
+                 source={IMAGE_URIS[i]}
+               />
+             <Text style={styles.tourText}>
+                 Example of centered text
+             </Text>
+             <Text style={styles.detailText}>
+                   Example of centered text
+             </Text>
+            </View>
+           );
+         }
+        return (
+            <View style={{flex:1}}>
+                <IndicatorViewPager
+                    style={styles.IndicatorStyle}
+                    indicator={this._renderDotIndicator()}
+                >
+                {pages}
+                </IndicatorViewPager>
+            </View>
+        );
+    }
+
+    _renderDotIndicator() {
+        return <PagerDotIndicator  pageCount={4} />;
+    }
+}
+/**
+ * ViewPager Image and Text Styles
+ */
+ var {height, width} = Dimensions.get('window');
+
+ const styles = StyleSheet.create({
+     container: {
+         flex: 1,
+         flexDirection: "row",
+         alignItems: "center",
+         justifyContent: "space-between"
+     },
+     tourText: {
+         marginLeft: 20,
+     },
+     detailText: {
+         marginLeft: 20,
+     },
+     image: {
+         marginRight: 20,
+         width:width*0.5,
+         height: height*0.4,
+         flex: 1,
+     },
+     pageStyle:{
+       backgroundColor: BGCOLOR,
+       flex: 1,
+       flexDirection: "column",
+       justifyContent: "space-between"
+     },
+     IndicatorStyle:{
+       height:height,
+     }
+ });
+
+
 /**
  * Connect the properties
  */
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(ProofnTour)

@@ -6,7 +6,7 @@
     "preset": "react-native",
     "moduleNameMapper": {
       "\\./datepicker$": "<rootDir>/node_modules/tcomb-form-native/lib/templates/bootstrap/datepicker.ios.js",
-       "\\./select$": "<rootDir>/node_modules/tcomb-form-native/lib/templates/bootstrap/select.ios.js"
+      "\\./select$": "<rootDir>/node_modules/tcomb-form-native/lib/templates/bootstrap/select.ios.js"
     },
     "preprocessorIgnorePatterns": [
       "node_modules/(?!react-native|tcomb-form-native|apsl-react-native-button)"
@@ -43,6 +43,7 @@
     "redux": "3.6.0",
     "redux-thunk": "2.2.0",
     "regenerator": "0.8.46",
+    "rn-viewpager": "^1.2.1",
     "tcomb-form-native": "0.6.5",
     "undefined": "0.1.0",
     "underscore": "1.8.3",
