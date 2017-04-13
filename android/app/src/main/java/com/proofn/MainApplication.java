@@ -31,8 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new VectorIconsPackage(),
             new RNSimpleAlertDialogPackage(),
-            new ReactNativeI18n(),
-           new VectorIconsPackage()
+            new ReactNativeI18n()
       );
     }
   };
