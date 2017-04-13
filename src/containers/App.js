@@ -77,16 +77,6 @@ function mapStateToProps (state) {
     }
   }
 }
-
-/**
- * Generate arrow icon for tour
- */
-
-class NextArrow extends React.Component {
-  render() {
-    return (<Icon name="keyboard-arrow-right" size={30} color="#000000" />);
-  }
-}
 /**
  * Bind all the actions from authActions, deviceActions and globalActions
  */
@@ -116,31 +106,33 @@ I18n.translations = Translations
 export class ProofnTour extends Component {
     constructor(){
       super();
-      this.getCurrentPageIndex = null;
+      this.nextArrow=this.nextArrow.bind(this);
+      this.onNextPress=this.onNextPress.bind(this);
+      this.updatePage=this.updatePage.bind(this);
       this.state = {
         pageIndex:0,
       };
 
     }
 
-    componentDidMount(){
-      this.getCurrentPageIndex = this.viewPager.getCurrentPageIndex.bind(this);
+    onNextPress(){
+      //alert("asdfasdf");
+      this.updatePage(this.state.pageIndex+1);
     }
 
-    handleNvEnter() {
-      alert(" asdfasfd "+this.state.pageIndex+" - "+this.getCurrentPageIndex() );
+    nextArrow() {
+      return (<Icon name="keyboard-arrow-right" size={30} color="#4F8EF7" onPress={this.onNextPress}/>);
     }
 
     render() {
-        let viewPager = null;
-
         let onSkipPress = () => {
           this.props.actions.getSessionToken()
         }
 
-        let testPress = () =>{
-          alert(" asdfasfd "+this.state.pageIndex+" - "+this.getCurrentPageIndex());
-        }
+        //let onNextPress = () =>{
+         //this.updatePage(this.state.pageIndex+1);
+         //alert("asdfasdf");
+        //}
 
         var pages = [];
          for (var i = 0; i < PAGES; i++) {
@@ -165,11 +157,11 @@ export class ProofnTour extends Component {
         return (
             <View>
                 <View style={styles.buttonLayout}>
-                  <Text style={styles.buttonStyle,{marginLeft:24}} onPress={testPress}>
+                  <Text style={styles.buttonStyle,{marginLeft:24}} onPress={onSkipPress}>
                         SKIP
                   </Text>
                   <View style={styles.buttonStyle,{marginRight:24}}>
-                    <NextArrow onPress={onSkipPress}/>
+                    {this.nextArrow()}
                   </View>
 
                 </View>
@@ -187,9 +179,13 @@ export class ProofnTour extends Component {
         );
     }
 
+    updatePage(index){
+      this.viewPager.setPage(index);
+    }
+
     onPageSelected(e) {
         this.setState({pageIndex:e.position})
-        alert("asdfa "+this.state.pageIndex);
+        //alert("asdfa "+this.state.pageIndex);
      }
 
     _renderDotIndicator() {
@@ -238,6 +234,7 @@ const onButtonPress = () => {
      image: {
          width:width*0.8,
          height:height*0.3,
+         marginLeft:40,
      },
      pageStyle:{
        backgroundColor: BGCOLOR,
