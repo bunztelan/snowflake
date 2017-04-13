@@ -38,6 +38,7 @@
     "react-native-simple-store": "1.1.0",
     "react-native-simpledialog-android": "1.0.8",
     "react-native-vector-icons": "^4.0.0",
+    "react-native-viewpager-enhanced": "^1.1.11",
     "react-redux": "5.0.2",
     "react-timer-mixin": "0.13.3",
     "redux": "3.6.0",

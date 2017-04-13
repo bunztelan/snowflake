@@ -31,7 +31,7 @@ import {StyleSheet, View, Dimensions,Button, Image, Text} from 'react-native';
 /**
  * The components we need from other library
  */
-import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
+import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'react-native-viewpager-enhanced';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 /**
@@ -114,6 +114,7 @@ I18n.translations = Translations
  */
 
 export class ProofnTour extends Component {
+
     render() {
         let onSkipPress = () => {
           this.props.actions.getSessionToken()
