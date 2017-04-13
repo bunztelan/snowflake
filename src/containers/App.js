@@ -176,6 +176,7 @@ export class ProofnTour extends Component {
                 <IndicatorViewPager
                     style={styles.IndicatorStyle}
                     ref={viewPager => { this.viewPager = viewPager; }}
+                    onPageSelected={this.onPageSelected.bind(this)}
                     indicator={this._renderDotIndicator()}
                 >
                 {pages}
@@ -186,6 +187,11 @@ export class ProofnTour extends Component {
         );
     }
 
+    onPageSelected(e) {
+        this.setState({pageIndex:e.position})
+        alert("asdfa "+this.state.pageIndex);
+     }
+
     _renderDotIndicator() {
         return <PagerDotIndicator
                 dotStyle={styles.dotStyle}
@@ -193,6 +199,8 @@ export class ProofnTour extends Component {
                 pageCount={4}
                 />;
     }
+
+
 }
 /**
   * Button Actions
