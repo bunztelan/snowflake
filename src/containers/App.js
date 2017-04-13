@@ -115,6 +115,9 @@ I18n.translations = Translations
 
 export class ProofnTour extends Component {
     render() {
+        let onSkipPress = () => {
+          this.props.actions.getSessionToken()
+        }
         var pages = [];
          for (var i = 0; i < PAGES; i++) {
            var pageStyle = {
@@ -141,7 +144,7 @@ export class ProofnTour extends Component {
         return (
             <View>
                 <View style={styles.buttonLayout}>
-                  <Text style={styles.buttonStyle,{marginLeft:24}}>
+                  <Text style={styles.buttonStyle,{marginLeft:24}} onPress={onSkipPress}>
                         SKIP
                   </Text>
                   <View style={styles.buttonStyle,{marginRight:24}}>
