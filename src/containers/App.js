@@ -27,7 +27,13 @@ import * as globalActions from '../reducers/global/globalActions'
  */
 import React,{Component} from 'react'
 import {StyleSheet, View, Dimensions,Button, Image, Text} from 'react-native';
+
+/**
+ * The components we need from other library
+ */
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 /**
  * The Header will display a Image and support Hot Loading
  */
@@ -72,6 +78,15 @@ function mapStateToProps (state) {
   }
 }
 
+/**
+ * Generate arrow icon for tour
+ */
+
+class NextArrow extends React.Component {
+  render() {
+    return (<Icon name="keyboard-arrow-right" size={30} color="#000000" />);
+  }
+}
 /**
  * Bind all the actions from authActions, deviceActions and globalActions
  */
@@ -129,9 +144,11 @@ export class ProofnTour extends Component {
                   <Text style={styles.buttonStyle,{marginLeft:24}}>
                         SKIP
                   </Text>
-                  <Text style={styles.buttonStyle,{marginRight:24}}>
-                        DONE
-                  </Text>
+                  <View style={styles.buttonStyle,{marginRight:24}}>
+                    <NextArrow/>
+                  </View>
+
+
                 </View>
                 <IndicatorViewPager
                     style={styles.IndicatorStyle}
@@ -223,11 +240,12 @@ const onButtonPress = () => {
      },
      buttonLayout:{
        zIndex:1,
-       marginTop:(height-65),
+       marginTop:(height*0.9),
        flexDirection:'row',
        height:30,
        width:width,
        justifyContent: 'space-between',
+       alignItems:'center',
        backgroundColor:"transparent",
        position:'absolute'
      },
