@@ -109,15 +109,28 @@ export class ProofnTour extends Component {
       this.nextArrow=this.nextArrow.bind(this);
       this.onNextPress=this.onNextPress.bind(this);
       this.updatePage=this.updatePage.bind(this);
+      this.changeView=this.changeView.bind(this);
       this.state = {
         pageIndex:0,
+        endTour:false,
       };
+    }
 
+    changeView(){
+       this.setState({
+         endTour: !this.state.endTour
+       })
     }
 
     onNextPress(){
-      //alert("asdfasdf");
-      this.updatePage(this.state.pageIndex+1);
+      if(this.state.pageIndex<3){
+        this.updatePage(this.state.pageIndex+1);
+        if (this.state.pageIndex==2){
+          this.changeView();
+        }
+      }else{
+        this.props.actions.getSessionToken();
+      }
     }
 
     nextArrow() {
@@ -129,10 +142,15 @@ export class ProofnTour extends Component {
           this.props.actions.getSessionToken()
         }
 
-        //let onNextPress = () =>{
-         //this.updatePage(this.state.pageIndex+1);
-         //alert("asdfasdf");
-        //}
+        const isEndTour = this.state.endTour;
+        let button = null;
+        if(isEndTour){
+          button = <Text style={styles.buttonStyle,{marginRight:24}} onPress={onSkipPress}>
+                    DONE
+                  </Text>;
+        }else{
+          button = this.nextArrow();
+        }
 
         var pages = [];
          for (var i = 0; i < PAGES; i++) {
@@ -161,7 +179,7 @@ export class ProofnTour extends Component {
                         SKIP
                   </Text>
                   <View style={styles.buttonStyle,{marginRight:24}}>
-                    {this.nextArrow()}
+                    {button}
                   </View>
 
                 </View>
@@ -185,7 +203,6 @@ export class ProofnTour extends Component {
 
     onPageSelected(e) {
         this.setState({pageIndex:e.position})
-        //alert("asdfa "+this.state.pageIndex);
      }
 
     _renderDotIndicator() {
@@ -195,9 +212,19 @@ export class ProofnTour extends Component {
                 pageCount={4}
                 />;
     }
-
-
 }
+/**
+  *
+  */
+var newView = React.createClass({
+  render(){
+    return(
+      <View>
+        <Text onPress={this.props.changeView}> the View is now changed </Text>
+      </View>
+    );
+  },
+});
 /**
   * Button Actions
   */
