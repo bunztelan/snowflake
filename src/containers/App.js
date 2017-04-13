@@ -114,18 +114,38 @@ I18n.translations = Translations
  */
 
 export class ProofnTour extends Component {
+    constructor(){
+      super();
+      this.getCurrentPageIndex = null;
+      this.state = {
+        pageIndex:0,
+      };
+
+    }
+
+    componentDidMount(){
+      this.getCurrentPageIndex = this.viewPager.getCurrentPageIndex.bind(this);
+    }
+
+    handleNvEnter() {
+      alert(" asdfasfd "+this.state.pageIndex+" - "+this.getCurrentPageIndex() );
+    }
 
     render() {
+        let viewPager = null;
+
         let onSkipPress = () => {
           this.props.actions.getSessionToken()
         }
+
+        let testPress = () =>{
+          alert(" asdfasfd "+this.state.pageIndex+" - "+this.getCurrentPageIndex());
+        }
+
         var pages = [];
          for (var i = 0; i < PAGES; i++) {
-           var pageStyle = {
-
-           };
            pages.push(
-             <View key={i} style={styles.pageStyle} collapsable={false}>
+             <View key={i} collapsable={false}>
              <Text style={styles.emptySpace}>
 
              </Text>
@@ -145,17 +165,17 @@ export class ProofnTour extends Component {
         return (
             <View>
                 <View style={styles.buttonLayout}>
-                  <Text style={styles.buttonStyle,{marginLeft:24}} onPress={onSkipPress}>
+                  <Text style={styles.buttonStyle,{marginLeft:24}} onPress={testPress}>
                         SKIP
                   </Text>
                   <View style={styles.buttonStyle,{marginRight:24}}>
-                    <NextArrow/>
+                    <NextArrow onPress={onSkipPress}/>
                   </View>
-
 
                 </View>
                 <IndicatorViewPager
                     style={styles.IndicatorStyle}
+                    ref={viewPager => { this.viewPager = viewPager; }}
                     indicator={this._renderDotIndicator()}
                 >
                 {pages}
