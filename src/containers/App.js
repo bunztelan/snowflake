@@ -26,7 +26,7 @@ import * as globalActions from '../reducers/global/globalActions'
  * The components we need from ReactNative
  */
 import React,{Component} from 'react'
-import {StyleSheet, View, Dimensions, Image, Text} from 'react-native';
+import {StyleSheet, View, Dimensions,Button, Image, Text} from 'react-native';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 /**
  * The Header will display a Image and support Hot Loading
@@ -40,6 +40,19 @@ var IMAGE_URIS = [
   require("../images/tour/guide3.png"),
   require("../images/tour/guide4.png")
 ];
+var TOUR_TEXT=[
+  "Welcome to Proofn Messages",
+  "Improve Your Future",
+  "Build Stronger Connection",
+  "Always Notified"
+]
+
+var TOUR_DETAIL=[
+  "Proofn help convey your exact thoughts",
+  "Change what you have said, sent, and attached. Re-do the past to improve your future",
+  "Richer hence useful client information right from your contact. Topics to follow, to avoid, and client's birthday reminder",
+  "Peek your notes and client information easily when composing message"
+]
 
 /**
  *  Save that state
@@ -94,34 +107,59 @@ export class ProofnTour extends Component {
            };
            pages.push(
              <View key={i} style={styles.pageStyle} collapsable={false}>
-               <Image resizeMode = 'cover' style = {styles.image}
+             <Text style={styles.emptySpace}>
+
+             </Text>
+               <Image resizeMode="contain" style = {styles.image}
                  source={IMAGE_URIS[i]}
                />
              <Text style={styles.tourText}>
-                 Example of centered text
+                   {TOUR_TEXT[i]}
              </Text>
              <Text style={styles.detailText}>
-                   Example of centered text
+                   {TOUR_DETAIL[i]}
              </Text>
+
             </View>
            );
          }
         return (
-            <View style={{flex:1}}>
+            <View>
+                <View style={styles.buttonLayout}>
+                  <Text style={styles.buttonStyle,{marginLeft:24}}>
+                        SKIP
+                  </Text>
+                  <Text style={styles.buttonStyle,{marginRight:24}}>
+                        DONE
+                  </Text>
+                </View>
                 <IndicatorViewPager
                     style={styles.IndicatorStyle}
                     indicator={this._renderDotIndicator()}
                 >
                 {pages}
                 </IndicatorViewPager>
+
             </View>
+
         );
     }
 
     _renderDotIndicator() {
-        return <PagerDotIndicator  pageCount={4} />;
+        return <PagerDotIndicator
+                dotStyle={styles.dotStyle}
+                selectedDotStyle={styles.selectedDotStyle}
+                pageCount={4}
+                />;
     }
 }
+/**
+  * Button Actions
+  */
+const onButtonPress = () => {
+  Alert.alert('Button has been pressed!');
+};
+
 /**
  * ViewPager Image and Text Styles
  */
@@ -135,25 +173,70 @@ export class ProofnTour extends Component {
          justifyContent: "space-between"
      },
      tourText: {
-         marginLeft: 20,
+        fontSize: 24,
+        color:'#F0A534',
+        marginTop:30,
+        height:40,
+        textAlign: 'center'
      },
      detailText: {
-         marginLeft: 20,
+        flex:1,
+        textAlign: 'center',
+        flexWrap: "wrap",
+        marginLeft:16,
+        marginRight:16
      },
      image: {
-         marginRight: 20,
-         width:width*0.5,
-         height: height*0.4,
-         flex: 1,
+         width:width*0.8,
+         height:height*0.3,
      },
      pageStyle:{
        backgroundColor: BGCOLOR,
-       flex: 1,
+       height:height,
        flexDirection: "column",
-       justifyContent: "space-between"
+       justifyContent: 'center',
+       alignItems: 'center',
      },
      IndicatorStyle:{
        height:height,
+       zIndex:0,
+     },
+     emptySpace:{
+       flex:1,
+     },
+     dotStyle:{
+       height:15,
+       width:15,
+       marginRight:10,
+       backgroundColor:'#A3A3A3',
+       borderRadius: 50,
+       marginBottom:40,
+     },
+     selectedDotStyle:{
+       height:15,
+       width:15,
+       marginRight:10,
+       backgroundColor:'#F0A534',
+       borderRadius: 50,
+       marginBottom:40,
+
+     },
+     buttonLayout:{
+       zIndex:1,
+       marginTop:(height-65),
+       flexDirection:'row',
+       height:30,
+       width:width,
+       justifyContent: 'space-between',
+       backgroundColor:"transparent",
+       position:'absolute'
+     },
+     buttonStyle:{
+       color:'#000000',
+       fontSize:20
+     },
+     skipButton:{
+       zIndex:2
      }
  });
 
