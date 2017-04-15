@@ -56,7 +56,8 @@ import
   ScrollView,
   Text,
   TouchableHighlight,
-  View
+  View,
+  Image
 }
 from 'react-native'
 
@@ -92,7 +93,23 @@ var styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
     marginRight: 10
-  }
+  },
+  headerLayout:{
+    marginTop:height*0.1,
+    width:width,
+    flexDirection: 'column',
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  proofnTitle:{
+    fontSize:24,
+    fontWeight:'bold',
+    color:'#F0A534'
+  },
+  image: {
+      width:width*0.9,
+      height:height*0.4,
+  },
 })
 /**
  * ## Redux boilerplate
@@ -258,11 +275,15 @@ class LoginRender extends Component {
       <View style={styles.container}>
         <ScrollView horizontal={false} width={width} height={height}>
           <View>
-            <Header isFetching={this.props.auth.form.isFetching}
-              showState={this.props.global.showState}
-              currentState={this.props.global.currentState}
-              onGetState={this.props.actions.getState}
-              onSetState={this.props.actions.setState} />
+            <View style={styles.headerLayout}>
+              <Text style={styles.proofnTitle} >
+              Proofn
+              </Text>
+              <Image resizeMode="contain" style = {styles.image}
+                source={require("../images/illustration_login.png")}
+              />
+            </View>
+
 
             <View style={styles.inputs}>
               <LoginForm

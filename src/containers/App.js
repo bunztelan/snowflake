@@ -40,9 +40,8 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 /**
- * The Header will display a Image and support Hot Loading
+ *  Define the content of the view pager from image  to text 
  */
-import type { ViewPagerScrollState } from 'ViewPagerAndroid';
 var PAGES = 4;
 var BGCOLOR = '#ffffff';
 var IMAGE_URIS = [
