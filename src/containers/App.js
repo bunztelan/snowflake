@@ -23,6 +23,11 @@ import * as deviceActions from '../reducers/device/deviceActions'
 import * as globalActions from '../reducers/global/globalActions'
 
 /**
+ * Router actions
+ */
+import { Actions } from 'react-native-router-flux'
+
+/**
  * The components we need from ReactNative
  */
 import React,{Component} from 'react'
@@ -118,7 +123,7 @@ export class ProofnTour extends Component {
 
     changeView(){
        this.setState({
-         endTour: !this.state.endTour
+         endTour: true,
        })
     }
 
@@ -129,7 +134,7 @@ export class ProofnTour extends Component {
           this.changeView();
         }
       }else{
-        this.props.actions.getSessionToken();
+        this.nextArrow();
       }
     }
 
@@ -139,13 +144,13 @@ export class ProofnTour extends Component {
 
     render() {
         let onSkipPress = () => {
-          this.props.actions.getSessionToken()
+            Actions.Login();
         }
 
         const isEndTour = this.state.endTour;
         let button = null;
         if(isEndTour){
-          button = <Text style={styles.buttonStyle,{marginRight:24}} onPress={onSkipPress}>
+          button = <Text style={styles.buttonStyle,{marginRight:16}} onPress={onSkipPress}>
                     DONE
                   </Text>;
         }else{
@@ -203,6 +208,11 @@ export class ProofnTour extends Component {
 
     onPageSelected(e) {
         this.setState({pageIndex:e.position})
+
+        if(e.position==3){
+          alert("asdfasd "+e.position);
+          this.changeView();
+        }
      }
 
     _renderDotIndicator() {
