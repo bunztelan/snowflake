@@ -46,7 +46,7 @@ var styles = StyleSheet.create({
 
     TextInputPhoneNumber: {
         fontSize:20,
-        height:60,
+        height:50,
         alignItems:'center'
     },
 
@@ -232,7 +232,7 @@ class PhoneNumberPicker extends React.Component {
         }
         countryPicker =
             <View style={[styles.viewBottomBorder,styles.containerRow]}>
-              <Text style={{flex:1}}>
+              <Text style={{flex:1,fontSize:18}}>
                 Country
               </Text>
               <TouchableOpacity style={{flexDirection:'row',flex:2}} onPress={()=> this.countryPicker.openModal()}>
@@ -256,18 +256,23 @@ class PhoneNumberPicker extends React.Component {
         }
         return new asYouType(this.state.country.cca2).input(this.state.phoneNo)
     }
-
+  /*
+    <TextInput style={[styles.TextInputPhoneNumber, {flex:3, borderBottomWidth:2}]}
+    underlineColorAndroid="#CECED2"
+    onChangeText={this.CallingCodeChanged.bind(this)}
+    value={"+" + this.state.country.callingCode}
+    keyboardType="phone-pad"/>
+  */
     render() {
         return (
             <View style={styles.containerCol}>
                 {this.SafeRenderCountryPicker(this.state.country.cca2)}
                 <View style={styles.containerRow}>
                      <View style={[styles.containerRow, styles.viewBottomBorder]}>
-                     <TextInput style={[styles.TextInputPhoneNumber, {flex:3, borderBottomWidth:2}]}
-                     underlineColorAndroid="#CECED2"
-                     onChangeText={this.CallingCodeChanged.bind(this)}
-                     value={"+" + this.state.country.callingCode}
-                     keyboardType="phone-pad"/>
+                     <Text style={[{flex:3, borderBottomWidth:2,fontSize:20,textAlign:'center'}]}
+                     underlineColorAndroid="#CECED2">
+                       {"+" + this.state.country.callingCode}
+                     </Text>
 
                      <TextInput style={[styles.TextInputPhoneNumber,{flex:1}]}
                      underlineColorAndroid="#CECED2"

@@ -51,6 +51,11 @@ import ItemCheckbox from '../components/ItemCheckbox'
 import PhoneNumberPicker from '../lib/CountryCodePicker/phonenumberpicker'
 
 /**
+ * React-native vector icons library
+ */
+import Icon from 'react-native-vector-icons/Ionicons';
+
+/**
  * The necessary React components
  */
 import React, {Component} from 'react'
@@ -62,7 +67,8 @@ import
   TextInput,
   TouchableHighlight,
   View,
-  Image
+  Image,
+  Button
 }
 from 'react-native'
 
@@ -115,6 +121,27 @@ var styles = StyleSheet.create({
       width:width*0.9,
       height:height*0.4,
   },
+  formText: {
+      fontSize:20,
+      height:50,
+      alignItems:'center',
+      color:'black'
+  },
+  centerComponent:{
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  formText:{
+    fontSize:20,
+    height:60,
+    alignItems:'center'
+  },
+  viewBottomBorder: {
+      marginHorizontal:40,
+      borderBottomColor: '#CECED2',
+      borderBottomWidth: 2,
+      marginBottom:10
+  },
 })
 /**
  * ## Redux boilerplate
@@ -147,6 +174,11 @@ class LoginRender extends Component {
     }
   }
 
+  loginButton = () =>  {
+    return (<Icon.Button name="ios-add" backgroundColor="#F0A534" color="#F0A534" iconStyle={{textAlign:'center',height:30}}>
+              <Text style={{color:'#000',marginLeft:width*0.3,fontSize:20}}>Login</Text>
+            </Icon.Button>);
+  }
   /**
    * ### componentWillReceiveProps
    * As the properties are validated they will be set here.
@@ -262,6 +294,7 @@ class LoginRender extends Component {
     let rightMessage = this.getMessage(rightMessageType, this.props.actions)
 
     let self = this
+    let button = this.loginButton();
 
     // display the login / register / change password screens
     this.errorAlert.checkError(this.props.auth.form.error)
@@ -289,6 +322,11 @@ class LoginRender extends Component {
      * Note how the button too is disabled if we're fetching. The
      * header props are mostly for support of Hot reloading.
      * See the docs for Header for more info.
+     * code backup
+     <FormButton
+       isDisabled={!this.props.auth.form.isValid || this.props.auth.form.isFetching}
+       onPress={onButtonPress}
+       buttonText={loginButtonText} />
      */
 
     return (
@@ -306,17 +344,24 @@ class LoginRender extends Component {
 
             {showCountry}
 
-            <View>
-              {showCountry}
-              <PhoneNumberPicker
+            <View style={styles.centerComponent}>
+                {showCountry}
+                <PhoneNumberPicker
                  countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
                  onChange={this.PhoneNumberPickerChanged.bind(this)}/>
+                  <View style={{height:40,width: width-80,marginBottom:10,borderBottomWidth:1,borderBottomColor:'#CECED2'}}>
+                    <TextInput
+                      style={[styles.formText,{flex:1}]}
+                      secureTextEntry={true}
+                      placeholder="Password"/>
+                  </View>
+
+
+               <View style={{width:width,paddingLeft:30,paddingRight:30}}>
+                {button}
+              </View>
             </View>
 
-            <FormButton
-              isDisabled={!this.props.auth.form.isValid || this.props.auth.form.isFetching}
-              onPress={onButtonPress}
-              buttonText={loginButtonText} />
 
             <View >
               <View style={styles.forgotContainer}>
