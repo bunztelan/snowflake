@@ -40,7 +40,7 @@ var styles = StyleSheet.create({
 
     viewBottomBorder: {
         marginHorizontal:30,
-        borderBottomColor: 'white',
+        borderBottomColor: '#CECED2',
         borderBottomWidth: 1
     },
 
@@ -66,6 +66,9 @@ class PhoneNumberPicker extends React.Component {
           onChange: props.onChange,
           skipFormatAsYouType: false
       }
+   }
+   showCountryList = () =>  {
+     return (<Icon name="chevron-right" size={30} color="#4F8EF7" onIconClicked={()=> this.countryPicker.openModal()}/>);
    }
 
     numberChanged(country, callingCode, phoneNumber) {
@@ -228,15 +231,21 @@ class PhoneNumberPicker extends React.Component {
             cca2 = 'LS' /* Lesotho :( */
         }
         countryPicker =
-            <View style={[styles.containerRow, styles.viewBottomBorder]}>
-            <TouchableOpacity style={[styles.containerRow]} onPress={()=> this.countryPicker.openModal()}>
-            <CountryPicker
-            ref={countryPicker => this.countryPicker = countryPicker}
-            closeable
-            onChange={this.FlagPickedChanged.bind(this)}
-            cca2={cca2} translation='eng'/>
-            <Text style={styles.TextCountryName}> {countryFromCCA2.name} </Text>
-            </TouchableOpacity>
+            <View style={[styles.viewBottomBorder,styles.containerRow]}>
+              <Text style={{flex:1}}>
+                Country
+              </Text>
+              <TouchableOpacity style={{flexDirection:'row',flex:2}} onPress={()=> this.countryPicker.openModal()}>
+                <CountryPicker
+                ref={countryPicker => this.countryPicker = countryPicker}
+                closeable
+                onChange={this.FlagPickedChanged.bind(this)}
+                cca2={cca2} translation='eng'/>
+                <Text style={[styles.TextCountryName,{flex:3}]}> {countryFromCCA2.name} </Text>
+                <View style={{flex:0.5}}>
+                  {this.showCountryList()}
+                </View>
+              </TouchableOpacity>
             </View>
         return (countryPicker)
     }
