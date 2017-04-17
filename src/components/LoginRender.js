@@ -141,7 +141,8 @@ class LoginRender extends Component {
         username: this.props.auth.form.fields.username,
         email: this.props.auth.form.fields.email,
         password: this.props.auth.form.fields.password,
-        passwordAgain: this.props.auth.form.fields.passwordAgain
+        passwordAgain: this.props.auth.form.fields.passwordAgain,
+        cca2:"US"
       }
     }
   }
@@ -233,14 +234,22 @@ class LoginRender extends Component {
    * Initialize country code number picker
    */
   PhoneNumberPickerChanged(country, callingCode, phoneNumber) {
-            this.setState({countryName: country.name, callingCode: callingCode, phoneNo:phoneNumber});
-         }
+    this.setState({countryName: country.name, callingCode: callingCode, phoneNo:phoneNumber,cca2:"US"});
+  }
+
+  showCountryPicker = () => {
+    //this.PhoneNumberPickerChanged.SafeRenderCountryPicker();
+  }
 
   /**
    * ### render
    * Setup some default presentations and render
    */
   render () {
+    var selectCountry=<Text style={styles.buttonStyle,{marginRight:16}} onPress={this.showCountryPicker()}>
+              Please select country
+            </Text>
+    var showCountry = this.PhoneNumberPickerChanged.SafeRenderCountryPicker
     var formType = this.props.formType
     var loginButtonText = this.props.loginButtonText
     var onButtonPress = this.props.onButtonPress
@@ -295,7 +304,10 @@ class LoginRender extends Component {
               />
             </View>
 
-            <View> 
+            {showCountry}
+
+            <View>
+              {showCountry}
               <PhoneNumberPicker
                  countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
                  onChange={this.PhoneNumberPickerChanged.bind(this)}/>
