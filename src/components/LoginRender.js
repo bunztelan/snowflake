@@ -45,6 +45,10 @@ import LoginForm from '../components/LoginForm'
  * The itemCheckbox will toggle the display of the password fields
  */
 import ItemCheckbox from '../components/ItemCheckbox'
+/**
+ *  The country code number picker for iOS library
+ */
+import PhoneNumberPicker from '../lib/CountryCodePicker/phonenumberpicker'
 
 /**
  * The necessary React components
@@ -55,6 +59,7 @@ import
   StyleSheet,
   ScrollView,
   Text,
+  TextInput,
   TouchableHighlight,
   View,
   Image
@@ -95,7 +100,7 @@ var styles = StyleSheet.create({
     marginRight: 10
   },
   headerLayout:{
-    marginTop:height*0.1,
+    marginTop:height*0.05,
     width:width,
     flexDirection: 'column',
     justifyContent:'center',
@@ -224,6 +229,12 @@ class LoginRender extends Component {
         return register
     }
   }
+  /**
+   * Initialize country code number picker
+   */
+  PhoneNumberPickerChanged(country, callingCode, phoneNumber) {
+            this.setState({countryName: country.name, callingCode: callingCode, phoneNo:phoneNumber});
+         }
 
   /**
    * ### render
@@ -284,14 +295,10 @@ class LoginRender extends Component {
               />
             </View>
 
-
-            <View style={styles.inputs}>
-              <LoginForm
-                formType={formType}
-                form={this.props.auth.form}
-                value={this.state.value}
-                onChange={self.onChange.bind(self)} />
-              {passwordCheckbox}
+            <View> 
+              <PhoneNumberPicker
+                 countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
+                 onChange={this.PhoneNumberPickerChanged.bind(this)}/>
             </View>
 
             <FormButton
