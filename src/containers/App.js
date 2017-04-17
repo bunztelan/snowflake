@@ -40,7 +40,7 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 /**
- *  Define the content of the view pager from image  to text 
+ *  Define the content of the view pager from image  to text
  */
 var PAGES = 4;
 var BGCOLOR = '#ffffff';
@@ -110,23 +110,19 @@ I18n.translations = Translations
 export class ProofnTour extends Component {
     constructor(){
       super();
-      this.nextArrow=this.nextArrow.bind(this);
-      this.onNextPress=this.onNextPress.bind(this);
-      this.updatePage=this.updatePage.bind(this);
-      this.changeView=this.changeView.bind(this);
       this.state = {
         pageIndex:0,
         endTour:false,
       };
     }
 
-    changeView(){
+    changeView = () =>  {
        this.setState({
          endTour: true,
        })
     }
 
-    onNextPress(){
+    onNextPress = () =>  {
       if(this.state.pageIndex<3){
         this.updatePage(this.state.pageIndex+1);
         if (this.state.pageIndex==2){
@@ -137,7 +133,7 @@ export class ProofnTour extends Component {
       }
     }
 
-    nextArrow() {
+    nextArrow = () =>  {
       return (<Icon name="keyboard-arrow-right" size={30} color="#4F8EF7" onPress={this.onNextPress}/>);
     }
 
@@ -201,7 +197,7 @@ export class ProofnTour extends Component {
         );
     }
 
-    updatePage(index){
+    updatePage = (index) =>  {
       this.viewPager.setPage(index);
     }
 
@@ -209,7 +205,6 @@ export class ProofnTour extends Component {
         this.setState({pageIndex:e.position})
 
         if(e.position==3){
-          alert("asdfasd "+e.position);
           this.changeView();
         }
      }
