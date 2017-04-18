@@ -23,15 +23,28 @@ import * as globalActions from '../reducers/global/globalActions'
  * Router actions
  */
 import { Actions } from 'react-native-router-flux'
+
+/**
+ * The Header will display a Image and support Hot Loading
+ */
+import Header from '../components/Header'
 /**
  * The ErrorAlert displays an alert for both ios & android
  */
 import ErrorAlert from '../components/ErrorAlert'
 /**
+ * The FormButton will change it's text between the 4 states as necessary
+ */
+import FormButton from '../components/FormButton'
+/**
  *  The LoginForm does the heavy lifting of displaying the fields for
  * textinput and displays the error messages
  */
 import LoginForm from '../components/LoginForm'
+/**
+ * The itemCheckbox will toggle the display of the password fields
+ */
+import ItemCheckbox from '../components/ItemCheckbox'
 /**
  *  The country code number picker for iOS library
  */
@@ -118,10 +131,13 @@ var styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center'
   },
-  formText:{
-    fontSize:20,
-    height:60,
-    alignItems:'center'
+  forgotPasswordDetailText: {
+     fontSize: 14,
+     marginTop:10,
+     marginBottom:20,
+     height:40,
+     width:width*0.8,
+     textAlign: 'center'
   },
   viewBottomBorder: {
       marginHorizontal:40,
@@ -163,12 +179,7 @@ class LoginRender extends Component {
     this.errorAlert = new ErrorAlert()
     this.state = {
       value: {
-        username: this.props.auth.form.fields.username,
-        email: this.props.auth.form.fields.email,
-        password: this.props.auth.form.fields.password,
-        passwordAgain: this.props.auth.form.fields.passwordAgain,
-        cca2:"US",
-        useEmail:false
+        email: '',
       }
     }
   }
@@ -187,7 +198,7 @@ class LoginRender extends Component {
     */
   loginButton = () =>  {
     return (<Icon.Button name="ios-add" backgroundColor="#F0A534" color="#F0A534" iconStyle={{textAlign:'center',height:30}}>
-              <Text style={{color:'#fff',marginLeft:width*0.3,fontSize:20}}>Login</Text>
+              <Text style={{color:'#fff',marginLeft:width*0.15,fontSize:20}}>Recover password</Text>
             </Icon.Button>);
   }
   /**
@@ -197,10 +208,12 @@ class LoginRender extends Component {
   componentWillReceiveProps (nextprops) {
     this.setState({
       value: {
+        /*
         username: nextprops.auth.form.fields.username,
         email: nextprops.auth.form.fields.email,
         password: nextprops.auth.form.fields.password,
         passwordAgain: nextprops.auth.form.fields.passwordAgain
+        */
       }
     })
   }
@@ -291,30 +304,10 @@ class LoginRender extends Component {
     var rightMessageType = this.props.rightMessageType
 
     var passwordCheckbox = <Text />
-    let leftMessage = this.getMessage(leftMessageType, this.props.actions)
-    let rightMessage = this.getMessage(rightMessageType, this.props.actions)
 
     let self = this
     let button = this.loginButton();
 
-    let onForgotPasswordPress = () => {
-        Actions.ForgotPassword();
-    }
-
-    let loginMethod = null;
-    const loginWithEmail = this.state.useEmail;
-    if(!loginWithEmail){
-      loginMethod = <PhoneNumberPicker countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
-                       onChange={this.PhoneNumberPickerChanged.bind(this)}/>;
-    }else{
-      loginMethod = <View style={styles.textInputStyle}>
-                      <TextInput
-                        style={[styles.formText,{flex:1}]}
-                        placeholder="Email address"/>
-                    </View>;
-    }
-    // display the login / register / change password screens
-    this.errorAlert.checkError(this.props.auth.form.error)
     /**
      * The LoginForm is now defined with the required fields.  Just
      * surround it with the Header and the navigation messages
@@ -337,32 +330,21 @@ class LoginRender extends Component {
               Proofn
               </Text>
               <Image resizeMode="contain" style = {styles.image}
-                source={require("../images/illustration_login.png")}
+                source={require("../images/auth/forgot_pass.png")}
               />
             </View>
 
             <View style={styles.centerComponent}>
-                  {loginMethod}
+                  <Text style={{fontSize:26}}>Forgot your password?</Text>
+                  <Text style={styles.forgotPasswordDetailText}>Enter your email below to receive your password reset instruction</Text>
                   <View style={styles.textInputStyle}>
                     <TextInput
                       style={[styles.formText,{flex:1}]}
-                      secureTextEntry={true}
-                      placeholder="Password"/>
+                      placeholder="Email address"/>
                   </View>
-                  <View style={{width:width-80}}>
+                  <View style={{width:width-80,marginTop:20}}>
                   {button}
                   </View>
-                 <View style={[{width:width-80},styles.centerComponent]}>
-                      <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
-                        <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Email</Text>
-                      </View>
-                      <View style={{flexDirection:'row',marginVertical:10}}>
-                        <Text style={{fontSize:16}}>Dont' have an account? </Text><Text style={styles.hyperlinkText}>Sign up</Text>
-                      </View>
-                      <View style={{flexDirection:'row',marginVertical:10}}>
-                        <Text style={styles.hyperlinkText} onPress={onForgotPasswordPress}>Forgot password</Text>
-                      </View>
-                </View>
             </View>
           </View>
         </ScrollView>

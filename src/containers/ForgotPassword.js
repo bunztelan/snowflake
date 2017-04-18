@@ -19,7 +19,7 @@ import * as authActions from '../reducers/auth/authActions'
 /**
  *   LoginRender
  */
-import LoginRender from '../components/LoginRender'
+import ForgotPasswordComponent from '../components/ForgotPassword'
 
 /**
  * Need React
@@ -62,22 +62,8 @@ I18n.translations = Translations
 let ForgotPassword = React.createClass({
 
   render () {
-    let loginButtonText = I18n.t('ForgotPassword.reset_password')
-    let onButtonPress = buttonPressHandler.bind(null,
-                                                this.props.actions.resetPassword,
-                                                this.props.auth.form.fields.email)
-
     return (
-      <LoginRender
-        formType={FORGOT_PASSWORD}
-        loginButtonText={loginButtonText}
-        onButtonPress={onButtonPress}
-        displayPasswordCheckbox={false}
-        leftMessageType={REGISTER}
-        rightMessageType={LOGIN}
-        auth={this.props.auth}
-        global={this.props.global}
-      />
+      <ForgotPasswordComponent/>
     )
   }
 })
