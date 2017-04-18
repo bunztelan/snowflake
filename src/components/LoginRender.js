@@ -142,6 +142,11 @@ var styles = StyleSheet.create({
       borderBottomWidth: 2,
       marginBottom:10
   },
+  hyperlinkText:{
+      color:'#F0A534',
+      fontSize:16,
+      fontWeight:'bold'
+  }
 })
 /**
  * ## Redux boilerplate
@@ -176,7 +181,7 @@ class LoginRender extends Component {
 
   loginButton = () =>  {
     return (<Icon.Button name="ios-add" backgroundColor="#F0A534" color="#F0A534" iconStyle={{textAlign:'center',height:30}}>
-              <Text style={{color:'#000',marginLeft:width*0.3,fontSize:20}}>Login</Text>
+              <Text style={{color:'#fff',marginLeft:width*0.3,fontSize:20}}>Login</Text>
             </Icon.Button>);
   }
   /**
@@ -355,22 +360,21 @@ class LoginRender extends Component {
                       secureTextEntry={true}
                       placeholder="Password"/>
                   </View>
-                  <View style={{flexDirection:'row',marginVertical:20}}>
-                    <Text style={{fontSize:16}}>Login with </Text><Text style={{color:'#5890FF',fontSize:16,fontWeight:'bold'}}>Email</Text>
+                  <View style={{width:width-80}}>
+                  {button}
                   </View>
-               <View style={{width:width-80}}>
-                {button}
-              </View>
+                 <View style={[{width:width-80},styles.centerComponent]}>
+                      <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
+                        <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText}>Email</Text>
+                      </View>
+                      <View style={{flexDirection:'row',marginVertical:10}}>
+                        <Text style={{fontSize:16}}>Dont' have an account? </Text><Text style={styles.hyperlinkText}>Sign up</Text>
+                      </View>
+                      <View style={{flexDirection:'row',marginVertical:10}}>
+                        <Text style={styles.hyperlinkText}>Forgot password</Text>
+                      </View>
+                </View>
             </View>
-
-
-            <View >
-              <View style={styles.forgotContainer}>
-                {leftMessage}
-                {rightMessage}
-              </View>
-            </View>
-
           </View>
         </ScrollView>
       </View>
