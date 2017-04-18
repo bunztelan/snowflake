@@ -146,6 +146,12 @@ var styles = StyleSheet.create({
       color:'#F0A534',
       fontSize:16,
       fontWeight:'bold'
+  },
+  textInputStyle:{
+      height:40,width: width-80,
+      marginBottom:10,
+      borderBottomWidth:1,
+      borderBottomColor:'#CECED2'
   }
 })
 /**
@@ -174,11 +180,24 @@ class LoginRender extends Component {
         email: this.props.auth.form.fields.email,
         password: this.props.auth.form.fields.password,
         passwordAgain: this.props.auth.form.fields.passwordAgain,
-        cca2:"US"
+        cca2:"US",
+        useEmail:false
       }
     }
   }
 
+  /**
+    * Change useEmail state value to true or false
+    * to replace phone textinput to email textinput,vica versa
+    */
+  onLoginMethodPress = () =>  {
+     this.setState({
+       useEmail: !this.state.useEmail,
+     })
+  }
+  /**
+    * Generate login button using react-native-vector-icons
+    */
   loginButton = () =>  {
     return (<Icon.Button name="ios-add" backgroundColor="#F0A534" color="#F0A534" iconStyle={{textAlign:'center',height:30}}>
               <Text style={{color:'#fff',marginLeft:width*0.3,fontSize:20}}>Login</Text>
@@ -273,19 +292,11 @@ class LoginRender extends Component {
   PhoneNumberPickerChanged(country, callingCode, phoneNumber) {
     this.setState({countryName: country.name, callingCode: callingCode, phoneNo:phoneNumber,cca2:"US"});
   }
-
-  showCountryPicker = () => {
-    //this.PhoneNumberPickerChanged.SafeRenderCountryPicker();
-  }
-
   /**
    * ### render
    * Setup some default presentations and render
    */
   render () {
-    var selectCountry=<Text style={styles.buttonStyle,{marginRight:16}} onPress={this.showCountryPicker()}>
-              Please select country
-            </Text>
     var showCountry = this.PhoneNumberPickerChanged.SafeRenderCountryPicker
     var formType = this.props.formType
     var loginButtonText = this.props.loginButtonText
@@ -301,6 +312,19 @@ class LoginRender extends Component {
     let self = this
     let button = this.loginButton();
 
+    let loginMethod = null;
+    const loginWithEmail = this.state.useEmail;
+    if(!loginWithEmail){
+      loginMethod =
+                       <PhoneNumberPicker countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
+                       onChange={this.PhoneNumberPickerChanged.bind(this)}/>;
+    }else{
+      loginMethod = <View style={styles.textInputStyle}>
+                      <TextInput
+                        style={[styles.formText,{flex:1}]}
+                        placeholder="Email address"/>
+                    </View>;
+    }
     // display the login / register / change password screens
     this.errorAlert.checkError(this.props.auth.form.error)
 
@@ -347,14 +371,9 @@ class LoginRender extends Component {
               />
             </View>
 
-            {showCountry}
-
             <View style={styles.centerComponent}>
-                {showCountry}
-                <PhoneNumberPicker
-                 countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
-                 onChange={this.PhoneNumberPickerChanged.bind(this)}/>
-                  <View style={{height:40,width: width-80,marginBottom:10,borderBottomWidth:1,borderBottomColor:'#CECED2'}}>
+                  {loginMethod}
+                  <View style={styles.textInputStyle}>
                     <TextInput
                       style={[styles.formText,{flex:1}]}
                       secureTextEntry={true}
@@ -365,7 +384,7 @@ class LoginRender extends Component {
                   </View>
                  <View style={[{width:width-80},styles.centerComponent]}>
                       <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
-                        <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText}>Email</Text>
+                        <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Email</Text>
                       </View>
                       <View style={{flexDirection:'row',marginVertical:10}}>
                         <Text style={{fontSize:16}}>Dont' have an account? </Text><Text style={styles.hyperlinkText}>Sign up</Text>
