@@ -355,9 +355,10 @@ class LoginRender extends Component {
                       secureTextEntry={true}
                       placeholder="Password"/>
                   </View>
-
-
-               <View style={{width:width,paddingLeft:30,paddingRight:30}}>
+                  <View style={{flexDirection:'row',marginVertical:20}}>
+                    <Text style={{fontSize:16}}>Login with </Text><Text style={{color:'#5890FF',fontSize:16,fontWeight:'bold'}}>Email</Text>
+                  </View>
+               <View style={{width:width-80}}>
                 {button}
               </View>
             </View>

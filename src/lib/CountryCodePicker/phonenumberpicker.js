@@ -269,24 +269,24 @@ class PhoneNumberPicker extends React.Component {
                 {this.SafeRenderCountryPicker(this.state.country.cca2)}
                 <View style={styles.containerRow}>
                      <View style={[styles.containerRow, styles.viewBottomBorder]}>
-                     <Text style={[{flex:3, borderBottomWidth:2,fontSize:20,textAlign:'center'}]}
-                     underlineColorAndroid="#CECED2">
-                       {"+" + this.state.country.callingCode}
-                     </Text>
+                       <Text style={[{flex:3, borderBottomWidth:2,fontSize:20,textAlign:'center'}]}
+                       underlineColorAndroid="#CECED2">
+                         {"+" + this.state.country.callingCode}
+                       </Text>
 
-                     <TextInput style={[styles.TextInputPhoneNumber,{flex:1}]}
-                     underlineColorAndroid="#CECED2"
-                     editable={false}
-                     value={"-"}/>
+                       <TextInput style={[styles.TextInputPhoneNumber,{flex:1}]}
+                       underlineColorAndroid="#CECED2"
+                       editable={false}
+                       value={"-"}/>
 
-                     <TextInput style={[styles.TextInputPhoneNumber, {flex:8, borderBottomWidth:2}]}
-                     ref={textInputPhoneNumber => this.textInputPhoneNumber = textInputPhoneNumber}
-                     underlineColorAndroid="black"
-                     onChangeText={this.PhoneChanged.bind(this)}
-                     placeholder="  your phone number"
-                     value={this.PhoneNumberFormatAsYouType()}
-                     autoFocus={true}
-                     keyboardType="phone-pad"/>
+                       <TextInput style={[styles.TextInputPhoneNumber, {flex:8, borderBottomWidth:2}]}
+                       ref={textInputPhoneNumber => this.textInputPhoneNumber = textInputPhoneNumber}
+                       underlineColorAndroid="black"
+                       onChangeText={this.PhoneChanged.bind(this)}
+                       placeholder="  your phone number"
+                       value={this.PhoneNumberFormatAsYouType()}
+                       autoFocus={true}
+                       keyboardType="phone-pad"/>
 
                     </View>
 
