@@ -298,7 +298,7 @@ class LoginRender extends Component {
     let button = this.loginButton();
 
     let onForgotPasswordPress = () => {
-        Actions.ForgotPassword();
+        Actions.forgotModal();
     }
 
     let loginMethod = null;

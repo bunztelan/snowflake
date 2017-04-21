@@ -177,19 +177,12 @@ export default function native (platform) {
               <Scene key='InitialLoginForm'
                 component={Register}
                 type='replace' />
-
-              <Scene key='Login'
-                hideNavBar
-                component={Login}
-                type='replace' />
-
+              <Scene key="Login" direction="horizontal">
+                  <Scene key="loginModal" hideNavBar={true} component={Login} schema="modal" />
+                  <Scene key="forgotModal" hideNavBar={false} component={ForgotPassword} title="Forgot Password"/>
+              </Scene>
               <Scene key='Register'
                 component={Register}
-                type='replace' />
-
-              <Scene key='ForgotPassword'
-                component={ForgotPassword}
-                title="Forgot Password"
                 type='replace' />
 
               <Scene key='Subview'
