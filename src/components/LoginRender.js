@@ -302,16 +302,25 @@ class LoginRender extends Component {
     }
 
     let loginMethod = null;
+    let loginMethodText = null;
     const loginWithEmail = this.state.useEmail;
     if(!loginWithEmail){
       loginMethod = <PhoneNumberPicker countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
                        onChange={this.PhoneNumberPickerChanged.bind(this)}/>;
+
+      loginMethodText = <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
+                         <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Email</Text>
+                       </View>;
     }else{
       loginMethod = <View style={styles.textInputStyle}>
                       <TextInput
                         style={[styles.formText,{flex:1}]}
                         placeholder="Email address"/>
                     </View>;
+
+      loginMethodText = <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
+                         <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Phone</Text>
+                       </View>;
     }
     // display the login / register / change password screens
     this.errorAlert.checkError(this.props.auth.form.error)
@@ -353,9 +362,7 @@ class LoginRender extends Component {
                   {button}
                   </View>
                  <View style={[{width:width-80},styles.centerComponent]}>
-                      <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
-                        <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Email</Text>
-                      </View>
+                      {loginMethodText}
                       <View style={{flexDirection:'row',marginVertical:10}}>
                         <Text style={{fontSize:16}}>Dont' have an account? </Text><Text style={styles.hyperlinkText}>Sign up</Text>
                       </View>

@@ -154,7 +154,6 @@ export default function native (platform) {
   let Proofn = React.createClass({
     render () {
       const store = configureStore(getInitialState())
-
             // configureStore will combine reducers from snowflake and main application
             // it will then create the store based on aggregate state from all reducers
       store.dispatch(setPlatform(platform))

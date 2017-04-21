@@ -60,7 +60,6 @@ import Translations from '../lib/Translations'
 I18n.translations = Translations
 
 let ForgotPassword = React.createClass({
-
   render () {
     return (
       <ForgotPasswordComponent/>
