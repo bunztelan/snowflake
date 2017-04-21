@@ -173,7 +173,7 @@ var I18n = require('react-native-i18n')
 import Translations from '../lib/Translations'
 I18n.translations = Translations
 
-class LoginRender extends Component {
+class ForgotPasswordRender extends Component {
   constructor (props) {
     super(props)
     this.errorAlert = new ErrorAlert()
@@ -256,7 +256,7 @@ class LoginRender extends Component {
           actions.forgotPasswordState()
           Actions.ForgotPassword()
         }} >
-        <Text>{I18n.t('LoginRender.forgot_password')}</Text>
+        <Text>{I18n.t('ForgotPasswordRender.forgot_password')}</Text>
       </TouchableHighlight>
 
     let alreadyHaveAccount =
@@ -265,7 +265,7 @@ class LoginRender extends Component {
           actions.loginState()
           Actions.Login()
         }} >
-        <Text>{I18n.t('LoginRender.already_have_account')}</Text>
+        <Text>{I18n.t('ForgotPasswordRender.already_have_account')}</Text>
       </TouchableHighlight>
 
     let register =
@@ -274,7 +274,7 @@ class LoginRender extends Component {
           actions.registerState()
           Actions.Register()
         }} >
-        <Text>{I18n.t('LoginRender.register')}</Text>
+        <Text>{I18n.t('ForgotPasswordRender.register')}</Text>
       </TouchableHighlight>
 
     switch (messageType) {
@@ -352,4 +352,5 @@ class LoginRender extends Component {
     )
   }
 }
-export default connect(null, mapDispatchToProps)(LoginRender)
+
+export default connect(null, mapDispatchToProps)(ForgotPasswordRender)

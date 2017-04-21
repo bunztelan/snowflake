@@ -10,13 +10,12 @@
  *
  * our 4 reducers
  */
-import auth from './auth/authReducer'
-import device from './device/deviceReducer'
-import global from './global/globalReducer'
-import profile from './profile/profileReducer'
+import auth from './auth/authReducer';
+import device from './device/deviceReducer';
+import global from './global/globalReducer';
+import profile from './profile/profileReducer';
 
-import { combineReducers } from 'redux'
-
+import { combineReducers } from 'redux';
 /**
  * ## CombineReducers
  *
@@ -27,7 +26,7 @@ const rootReducer = combineReducers({
   auth,
   device,
   global,
-  profile
+  profile,
 })
 
 export default rootReducer

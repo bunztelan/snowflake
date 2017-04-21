@@ -45,6 +45,7 @@ import {
  */
 import configureStore from './lib/configureStore'
 
+
 /**
  * ### Translations
  */
@@ -88,7 +89,7 @@ import {setStore} from './reducers/global/globalActions'
 
 /**
  * ## States
- * Snowflake explicitly defines initial state
+ * Snowflake explicitly defines initial state + navigator state
  *
  */
 import AuthInitialState from './reducers/auth/authInitialState'
@@ -166,8 +167,9 @@ export default function native (platform) {
 
         <Provider store={store}>
           <Router sceneStyle={{ backgroundColor: 'white' }}>
-            <Scene key='root' hideNavBar>
+            <Scene key='root' >
               <Scene key='App'
+                hideNavBar
                 component={App}
                 type='replace'
                 initial />
@@ -177,6 +179,7 @@ export default function native (platform) {
                 type='replace' />
 
               <Scene key='Login'
+                hideNavBar
                 component={Login}
                 type='replace' />
 
@@ -186,6 +189,7 @@ export default function native (platform) {
 
               <Scene key='ForgotPassword'
                 component={ForgotPassword}
+                title="Forgot Password"
                 type='replace' />
 
               <Scene key='Subview'
