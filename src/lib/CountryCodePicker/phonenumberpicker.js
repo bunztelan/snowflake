@@ -51,7 +51,7 @@ var styles = StyleSheet.create({
     },
 
     TextCountryName: {
-        fontSize:20,
+        fontSize:18,
         color:'#5890FF'
     }
 });
@@ -66,10 +66,10 @@ class PhoneNumberPicker extends React.Component {
           onChange: props.onChange,
           skipFormatAsYouType: false
       }
-   }
-   showCountryList = () =>  {
-     return (<Icon name="chevron-right" size={30} color="#4F8EF7" onIconClicked={()=> this.countryPicker.openModal()}/>);
-   }
+     }
+     showCountryList = () =>  {
+       return (<Icon name="chevron-right" size={30} color="#4F8EF7" onIconClicked={()=> this.countryPicker.openModal()}/>);
+     }
 
     numberChanged(country, callingCode, phoneNumber) {
         callingCode = callingCode + ""
@@ -176,7 +176,7 @@ class PhoneNumberPicker extends React.Component {
         this.numberChanged(updatedCountry,
                            updatedCountry.callingCode,
                            this.state.phoneNo)
-        this.textInputPhoneNumber.focus()
+        //this.textInputPhoneNumber.focus()
     }
 
     CallingCodeChanged(updatedCallingCode) {
@@ -186,7 +186,7 @@ class PhoneNumberPicker extends React.Component {
                            countryFromCallingCode.callingCode,
                            this.state.phoneNo)
         if (countryFromCallingCode.cca2.length) {
-           this.textInputPhoneNumber.focus()
+           //this.textInputPhoneNumber.focus()
         }
     }
 
@@ -211,12 +211,13 @@ class PhoneNumberPicker extends React.Component {
     }
 
     componentDidMount() {
-
+        /*
         setTimeout(
             () => {
                 this.textInputPhoneNumber.focus()},
             100
         );
+        */
     }
 
     SafeRenderCountryPicker(cca2) {
@@ -231,8 +232,8 @@ class PhoneNumberPicker extends React.Component {
             cca2 = 'LS' /* Lesotho :( */
         }
         countryPicker =
-            <View style={[styles.viewBottomBorder,styles.containerRow]}>
-              <Text style={{flex:1,fontSize:18}}>
+            <View style={[styles.viewBottomBorder,styles.containerRow,{marginHorizontal:40}]}>
+              <Text style={{flex:1,fontSize:18,paddingLeft:7}}>
                 Country
               </Text>
               <TouchableOpacity style={{flexDirection:'row',flex:2}} onPress={()=> this.countryPicker.openModal()}>
@@ -263,34 +264,36 @@ class PhoneNumberPicker extends React.Component {
     value={"+" + this.state.country.callingCode}
     keyboardType="phone-pad"/>
   */
+  /*
+  <View style={styles.containerRow}>
+       <View style={[styles.containerRow, styles.viewBottomBorder]}>
+         <Text style={[{flex:3, borderBottomWidth:2,fontSize:20,textAlign:'center'}]}
+         underlineColorAndroid="#CECED2">
+           {"+" + this.state.country.callingCode}
+         </Text>
+         <TextInput style={[styles.TextInputPhoneNumber,{flex:1}]}
+         underlineColorAndroid="#CECED2"
+         editable={false}
+         value={"-"}/>
+
+         <TextInput style={[styles.TextInputPhoneNumber, {flex:8, borderBottomWidth:2}]}
+         ref={textInputPhoneNumber => this.textInputPhoneNumber = textInputPhoneNumber}
+         underlineColorAndroid="black"
+         onChangeText={this.PhoneChanged.bind(this)}
+         placeholder="  your phone number"
+         value={this.PhoneNumberFormatAsYouType()}
+         autoFocus={true}
+         keyboardType="phone-pad"/>
+
+
+      </View>
+
+  </View>
+  */
     render() {
         return (
-            <View style={styles.containerCol}>
+            <View style={styles.containerRow}>
                 {this.SafeRenderCountryPicker(this.state.country.cca2)}
-                <View style={styles.containerRow}>
-                     <View style={[styles.containerRow, styles.viewBottomBorder]}>
-                       <Text style={[{flex:3, borderBottomWidth:2,fontSize:20,textAlign:'center'}]}
-                       underlineColorAndroid="#CECED2">
-                         {"+" + this.state.country.callingCode}
-                       </Text>
-
-                       <TextInput style={[styles.TextInputPhoneNumber,{flex:1}]}
-                       underlineColorAndroid="#CECED2"
-                       editable={false}
-                       value={"-"}/>
-
-                       <TextInput style={[styles.TextInputPhoneNumber, {flex:8, borderBottomWidth:2}]}
-                       ref={textInputPhoneNumber => this.textInputPhoneNumber = textInputPhoneNumber}
-                       underlineColorAndroid="black"
-                       onChangeText={this.PhoneChanged.bind(this)}
-                       placeholder="  your phone number"
-                       value={this.PhoneNumberFormatAsYouType()}
-                       autoFocus={true}
-                       keyboardType="phone-pad"/>
-
-                    </View>
-
-                </View>
             </View>
         );
     }

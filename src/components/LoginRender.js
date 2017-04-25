@@ -28,20 +28,15 @@ import { Actions } from 'react-native-router-flux'
  */
 import ErrorAlert from '../components/ErrorAlert'
 /**
- *  The LoginForm does the heavy lifting of displaying the fields for
- * textinput and displays the error messages
- */
-import LoginForm from '../components/LoginForm'
-/**
  *  The country code number picker for iOS library
  */
 import PhoneNumberPicker from '../lib/CountryCodePicker/phonenumberpicker'
-
 /**
  * React-native vector icons library
  */
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import Dimensions from 'Dimensions'
 /**
  * The necessary React components
  */
@@ -59,7 +54,62 @@ import
 }
 from 'react-native'
 
-import Dimensions from 'Dimensions'
+/**
+ *  The fantastic little form library
+ */
+const t = require('tcomb-form-native')
+let Form = t.form.Form
+
+// here we are: define your domain model
+var phone = t.struct({
+  countryCode: t.maybe(t.String),       // a required string
+  phoneNumber: t.Number,
+  password: t.String       // a boolean
+});
+
+var email = t.struct({
+  emailAddress: t.String,
+  password: t.String       // a boolean
+});
+var _ = require('lodash');
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+stylesheet.textbox.normal.borderWidth = 0;
+stylesheet.textbox.error.borderWidth = 0;
+stylesheet.textbox.normal.marginBottom = 0;
+stylesheet.textbox.error.marginBottom = 0;
+
+stylesheet.textboxView.normal.borderWidth = 0;
+stylesheet.textboxView.error.borderWidth = 0;
+stylesheet.textboxView.normal.borderRadius = 0;
+stylesheet.textboxView.error.borderRadius = 0;
+stylesheet.textboxView.normal.borderBottomWidth = 1;
+stylesheet.textboxView.normal.borderBottomColor = '#CECED2';
+stylesheet.textboxView.error.borderBottomWidth = 1;
+stylesheet.textboxView.error.borderBottomColor = '#CECED2';
+stylesheet.textbox.normal.marginBottom = 5;
+stylesheet.textbox.error.marginBottom = 5;
+
+const ssCountryCode = _.cloneDeep(t.form.Form.stylesheet);
+ssCountryCode.textboxView.normal.width =50;
+
+var options = {
+  fields: {
+    countryCode: {
+      hidden: true,
+    },
+    phoneNumber: {
+      //label: 'phone number'
+      error: 'Insert a valid phone number'
+    },
+    password:{
+      secureTextEntry:true
+    }
+  },
+  auto: 'placeholders',
+  stylesheet: stylesheet
+};
+
 var {height, width} = Dimensions.get('window') // Screen dimensions in current orientation
 
 /**
@@ -163,16 +213,23 @@ class LoginRender extends Component {
     this.errorAlert = new ErrorAlert()
     this.state = {
       value: {
-        username: this.props.auth.form.fields.username,
+        phoneNumber: this.props.auth.form.fields.username,
         email: this.props.auth.form.fields.email,
         password: this.props.auth.form.fields.password,
-        passwordAgain: this.props.auth.form.fields.passwordAgain,
         cca2:"US",
+        countryCode:"+1",
         useEmail:false
       }
     }
   }
 
+  onPress = () => {
+    // call getValue() to get the values of the form
+    var value = this.refs.form.getValue();
+    if (value) { // if validation fails, value will be null
+      alert(value.phoneNumber+" "+this.state.value.countryCode); // value here is an instance of Person
+    }
+  }
   /**
     * Change useEmail state value to true or false
     * to replace phone textinput to email textinput,vica versa
@@ -186,10 +243,11 @@ class LoginRender extends Component {
     * Generate login button using react-native-vector-icons
     */
   loginButton = () =>  {
-    return (<Icon.Button name="ios-add" backgroundColor="#F0A534" color="#F0A534" iconStyle={{textAlign:'center',height:30}}>
+    return (<Icon.Button name="ios-add" backgroundColor="#F0A534" color="#F0A534" iconStyle={{textAlign:'center',height:30}} onPress={this.onPress}>
               <Text style={{color:'#fff',marginLeft:width*0.3,fontSize:20}}>Login</Text>
             </Icon.Button>);
   }
+
   /**
    * ### componentWillReceiveProps
    * As the properties are validated they will be set here.
@@ -231,69 +289,27 @@ class LoginRender extends Component {
       {value}
     )
   }
-  /**
-  *  Get the appropriate message for the current action
-  *  @param messageType FORGOT_PASSWORD, or LOGIN, or REGISTER
-  *  @param actions the action for the message type
-  */
-  getMessage (messageType, actions) {
-    let forgotPassword =
-      <TouchableHighlight
-        onPress={() => {
-          actions.forgotPasswordState()
-          Actions.ForgotPassword()
-        }} >
-        <Text>{I18n.t('LoginRender.forgot_password')}</Text>
-      </TouchableHighlight>
 
-    let alreadyHaveAccount =
-      <TouchableHighlight
-        onPress={() => {
-          actions.loginState()
-          Actions.Login()
-        }} >
-        <Text>{I18n.t('LoginRender.already_have_account')}</Text>
-      </TouchableHighlight>
-
-    let register =
-      <TouchableHighlight
-        onPress={() => {
-          actions.registerState()
-          Actions.Register()
-        }} >
-        <Text>{I18n.t('LoginRender.register')}</Text>
-      </TouchableHighlight>
-
-    switch (messageType) {
-      case FORGOT_PASSWORD:
-        return forgotPassword
-      case LOGIN:
-        return alreadyHaveAccount
-      case REGISTER:
-        return register
-    }
-  }
   /**
    * Initialize country code number picker
    */
   PhoneNumberPickerChanged(country, callingCode, phoneNumber) {
-    this.setState({countryName: country.name, callingCode: callingCode, phoneNo:phoneNumber,cca2:"US"});
+    this.setState({
+      countryName: country.name,
+      callingCode: callingCode,
+      phoneNo:phoneNumber,
+      cca2:"US",
+      value:{
+        countryCode:callingCode,
+      }
+    });
   }
+
   /**
    * ### render
    * Setup some default presentations and render
    */
   render () {
-    var loginButtonText = this.props.loginButtonText
-    var onButtonPress = this.props.onButtonPress
-    var displayPasswordCheckbox = this.props.displayPasswordCheckbox
-    var leftMessageType = this.props.leftMessageType
-    var rightMessageType = this.props.rightMessageType
-
-    var passwordCheckbox = <Text />
-    let leftMessage = this.getMessage(leftMessageType, this.props.actions)
-    let rightMessage = this.getMessage(rightMessageType, this.props.actions)
-
     let self = this
     let button = this.loginButton();
 
@@ -301,23 +317,19 @@ class LoginRender extends Component {
         Actions.forgotModal();
     }
 
-    let loginMethod = null;
+    let loginWithPhone = null;
     let loginMethodText = null;
+
     const loginWithEmail = this.state.useEmail;
+
     if(!loginWithEmail){
-      loginMethod = <PhoneNumberPicker countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
+      loginWithPhone = <PhoneNumberPicker countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
                        onChange={this.PhoneNumberPickerChanged.bind(this)}/>;
 
       loginMethodText = <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
                          <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Email</Text>
                        </View>;
     }else{
-      loginMethod = <View style={styles.textInputStyle}>
-                      <TextInput
-                        style={[styles.formText,{flex:1}]}
-                        placeholder="Email address"/>
-                    </View>;
-
       loginMethodText = <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
                          <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Phone</Text>
                        </View>;
@@ -351,16 +363,17 @@ class LoginRender extends Component {
             </View>
 
             <View style={styles.centerComponent}>
-                  {loginMethod}
-                  <View style={styles.textInputStyle}>
-                    <TextInput
-                      style={[styles.formText,{flex:1}]}
-                      secureTextEntry={true}
-                      placeholder="Password"/>
-                  </View>
-                  <View style={{width:width-80}}>
+                 {loginWithPhone}
+                 <View style={{width:width-80,marginTop:10}}>
+                   <Form
+                     ref="form"
+                     type={phone}
+                     options={options}
+                   />
+                 </View>
+                 <View style={{width:width-80}}>
                   {button}
-                  </View>
+                 </View>
                  <View style={[{width:width-80},styles.centerComponent]}>
                       {loginMethodText}
                       <View style={{flexDirection:'row',marginVertical:10}}>
