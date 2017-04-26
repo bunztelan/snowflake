@@ -65,7 +65,6 @@ I18n.translations = Translations
 let Login = React.createClass({
 
   render () {
-    let loginButtonText = I18n.t('Login.login')
     let onButtonPress = buttonPressHandler.bind(null,
                                                 this.props.actions.login,
                                                 this.props.auth.form.fields.username,
@@ -74,12 +73,7 @@ let Login = React.createClass({
 
     return (
       <LoginRender
-        formType={LOGIN}
-        loginButtonText={loginButtonText}
         onButtonPress={onButtonPress}
-        displayPasswordCheckbox
-        leftMessageType={REGISTER}
-        rightMessageType={FORGOT_PASSWORD}
         auth={this.props.auth}
         global={this.props.global}
       />

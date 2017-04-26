@@ -73,7 +73,7 @@ stylesheet.textboxView.error.borderRadius = 0;
 stylesheet.textboxView.normal.borderBottomWidth = 1;
 stylesheet.textboxView.normal.borderBottomColor = '#CECED2';
 stylesheet.textboxView.error.borderBottomWidth = 1;
-stylesheet.textboxView.error.borderBottomColor = '#CECED2';
+stylesheet.textboxView.error.borderBottomColor = '#FFF';
 stylesheet.textbox.normal.marginBottom = 5;
 stylesheet.textbox.error.marginBottom = 5;
 
@@ -110,6 +110,14 @@ var optionsPhone = {
   },
   auto: 'placeholders',
   stylesheet: stylesheet
+};
+
+var Password = t.String;
+
+// if you define a getValidationErrorMessage function, it will be called on validation errors
+Password.getValidationErrorMessage = function (value, path, context) {
+  if(value.length<6)
+  return 'Password length minimum 6 char';
 };
 
 var {height, width} = Dimensions.get('window') // Screen dimensions in current orientation
@@ -193,6 +201,7 @@ var styles = StyleSheet.create({
       borderBottomColor:'#CECED2'
   }
 })
+
 /**
  * ## Redux boilerplate
  */
@@ -234,12 +243,12 @@ class LoginRender extends Component {
       return t.struct({
         countryCode: t.maybe(t.String),
         phoneNumber: t.Number,
-        password: t.String
+        password: Password
       });
     }else{
       return t.struct({
         emailAddress: t.Number,
-        password: t.String
+        password: Password
       });
     }
   }
@@ -261,9 +270,12 @@ class LoginRender extends Component {
   onPress = () => {
     // call getValue() to get the values of the form
     var value = this.refs.form.getValue();
+    t.validate(value.password, Password)
     if (value) { // if validation fails, value will be null
       alert(value.phoneNumber+" "+this.state.value.countryCode); // value here is an instance of Person
     }
+    var result = t.validate(value.password, Password);
+    result.firstError().message;
   }
   /**
     * Generate login button using react-native-vector-icons
