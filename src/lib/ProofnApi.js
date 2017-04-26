@@ -262,4 +262,4 @@ export class ProofnApi extends Backend {
   }
 }
 // The singleton variable
-export let ProofnApi = new ProofnApi()
+export let proofnApi = new ProofnApi()
