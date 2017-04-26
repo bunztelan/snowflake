@@ -6,6 +6,14 @@ module.exports = {
     parseRemote: false,
     parseLocal: false
   },
+  PROOFN:{
+    beta:{
+      url:'http://beta.proofn.com/v1/'
+    },
+    prod:{
+      url:'http://api.proofn.com/v1/'
+    }
+  },
   HAPI: {
     local: {
       url: 'http://localhost:5000'
