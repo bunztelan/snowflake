@@ -226,6 +226,9 @@ class LoginRender extends Component {
     }
   }
 
+  /*
+   *  This function is used to set form type when user select different login method
+   */
   getType(value){
     if(value){
       return t.struct({
@@ -241,6 +244,9 @@ class LoginRender extends Component {
     }
   }
 
+  /*
+   * return "option" based on form type
+   */
   getOptions(value){
     if(value){
       return optionsPhone;
@@ -249,6 +255,9 @@ class LoginRender extends Component {
     }
   }
 
+  /**
+    * Action when user press login button
+    */
   onPress = () => {
     // call getValue() to get the values of the form
     var value = this.refs.form.getValue();
@@ -339,19 +348,6 @@ class LoginRender extends Component {
 
     // display the login / register / change password screens
     this.errorAlert.checkError(this.props.auth.form.error)
-    /**
-     * The LoginForm is now defined with the required fields.  Just
-     * surround it with the Header and the navigation messages
-     * Note how the button too is disabled if we're fetching. The
-     * header props are mostly for support of Hot reloading.
-     * See the docs for Header for more info.
-     * code backup
-     <FormButton
-       isDisabled={!this.props.auth.form.isValid || this.props.auth.form.isFetching}
-       onPress={onButtonPress}
-       buttonText={loginButtonText} />
-     */
-
     return (
       <View style={styles.container}>
         <ScrollView horizontal={false} width={width} height={height}>
