@@ -58,19 +58,6 @@ from 'react-native'
  *  The fantastic little form library
  */
 const t = require('tcomb-form-native')
-let Form = t.form.Form
-
-// here we are: define your domain model
-var phone = t.struct({
-  countryCode: t.maybe(t.String),       // a required string
-  phoneNumber: t.Number,
-  password: t.String       // a boolean
-});
-
-var email = t.struct({
-  emailAddress: t.String,
-  password: t.String       // a boolean
-});
 var _ = require('lodash');
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 
@@ -93,7 +80,22 @@ stylesheet.textbox.error.marginBottom = 5;
 const ssCountryCode = _.cloneDeep(t.form.Form.stylesheet);
 ssCountryCode.textboxView.normal.width =50;
 
-var options = {
+
+var optionsEmail = {
+  fields: {
+    emailAddress: {
+      //label: 'phone number'
+      error: 'Insert a valid email address'
+    },
+    password:{
+      secureTextEntry:true
+    }
+  },
+  auto: 'placeholders',
+  stylesheet: stylesheet
+};
+
+var optionsPhone = {
   fields: {
     countryCode: {
       hidden: true,
@@ -218,8 +220,33 @@ class LoginRender extends Component {
         password: this.props.auth.form.fields.password,
         cca2:"US",
         countryCode:"+1",
-        useEmail:false
-      }
+        loginWithPhone:true,
+      },
+      type:this.getType(true),
+      options:this.getOptions(true)
+    }
+  }
+
+  getType(value){
+    if(value){
+      return t.struct({
+        countryCode: t.maybe(t.String),
+        phoneNumber: t.Number,
+        password: t.String
+      });
+    }else{
+      return t.struct({
+        emailAddress: t.Number,
+        password: t.String
+      });
+    }
+  }
+
+  getOptions(value){
+    if(value){
+      return optionsPhone;
+    }else{
+      return optionsEmail;
     }
   }
 
@@ -229,15 +256,6 @@ class LoginRender extends Component {
     if (value) { // if validation fails, value will be null
       alert(value.phoneNumber+" "+this.state.value.countryCode); // value here is an instance of Person
     }
-  }
-  /**
-    * Change useEmail state value to true or false
-    * to replace phone textinput to email textinput,vica versa
-    */
-  onLoginMethodPress = () =>  {
-     this.setState({
-       useEmail: !this.state.useEmail,
-     })
   }
   /**
     * Generate login button using react-native-vector-icons
@@ -262,34 +280,6 @@ class LoginRender extends Component {
       }
     })
   }
-
-  /**
-   * ### onChange
-   *
-   * As the user enters keys, this is called for each key stroke.
-   * Rather then publish the rules for each of the fields, I find it
-   * better to display the rules required as long as the field doesn't
-   * meet the requirements.
-   * *Note* that the fields are validated by the authReducer
-   */
-  onChange (value) {
-    if (value.username !== '') {
-      this.props.actions.onAuthFormFieldChange('username', value.username)
-    }
-    if (value.email !== '') {
-      this.props.actions.onAuthFormFieldChange('email', value.email)
-    }
-    if (value.password !== '') {
-      this.props.actions.onAuthFormFieldChange('password', value.password)
-    }
-    if (value.passwordAgain !== '') {
-      this.props.actions.onAuthFormFieldChange('passwordAgain', value.passwordAgain)
-    }
-    this.setState(
-      {value}
-    )
-  }
-
   /**
    * Initialize country code number picker
    */
@@ -304,7 +294,19 @@ class LoginRender extends Component {
       }
     });
   }
-
+  /**
+    * Change useEmail state value to true or false
+    * to replace phone textinput to email textinput,vica versa
+    */
+  onLoginMethodPress = () =>  {
+     this.setState({
+       value:{
+          loginWithPhone: !this.state.value.loginWithPhone,
+       },
+       type:this.getType(!this.state.value.loginWithPhone),
+       options:this.getOptions(!this.state.value.loginWithPhone)
+     });
+  }
   /**
    * ### render
    * Setup some default presentations and render
@@ -320,20 +322,22 @@ class LoginRender extends Component {
     let loginWithPhone = null;
     let loginMethodText = null;
 
-    const loginWithEmail = this.state.useEmail;
-
-    if(!loginWithEmail){
+    const loginWithEmail = this.state.value.loginWithPhone;
+    if(loginWithEmail){
       loginWithPhone = <PhoneNumberPicker countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
                        onChange={this.PhoneNumberPickerChanged.bind(this)}/>;
 
       loginMethodText = <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
-                         <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Email</Text>
+                         <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={() => this.onLoginMethodPress()}>Email</Text>
                        </View>;
     }else{
       loginMethodText = <View style={{flexDirection:'row',marginTop:20,marginBottom:10}}>
-                         <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={this.onLoginMethodPress}>Phone</Text>
+                         <Text style={{fontSize:16}}>Login using </Text><Text style={styles.hyperlinkText} onPress={() => this.onLoginMethodPress()}>Phone</Text>
                        </View>;
     }
+
+
+
     // display the login / register / change password screens
     this.errorAlert.checkError(this.props.auth.form.error)
     /**
@@ -365,10 +369,10 @@ class LoginRender extends Component {
             <View style={styles.centerComponent}>
                  {loginWithPhone}
                  <View style={{width:width-80,marginTop:10}}>
-                   <Form
+                   <t.form.Form
                      ref="form"
-                     type={phone}
-                     options={options}
+                     type={this.state.type}
+                     options={this.state.options}
                    />
                  </View>
                  <View style={{width:width-80}}>

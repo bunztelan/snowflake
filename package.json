@@ -34,6 +34,7 @@
     "react-mixin": "3.0.5",
     "react-native": "0.41.2",
     "react-native-country-code-telephone-input": "0.0.9",
+    "react-native-floating-label": "^0.2.3",
     "react-native-i18n": "1.0.0",
     "react-native-material-design": "^0.3.7",
     "react-native-navbar": "1.6.0",
