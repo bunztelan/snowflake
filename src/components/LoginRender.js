@@ -218,10 +218,9 @@ class LoginRender extends Component {
         phoneNumber: this.props.auth.form.fields.username,
         email: this.props.auth.form.fields.email,
         password: this.props.auth.form.fields.password,
-        cca2:"US",
         countryCode:"+1",
-        loginWithPhone:true,
       },
+      loginWithPhone:true,
       type:this.getType(true),
       options:this.getOptions(true)
     }
@@ -295,16 +294,16 @@ class LoginRender extends Component {
     });
   }
   /**
-    * Change useEmail state value to true or false
+    * Change Login method state value to true or false
     * to replace phone textinput to email textinput,vica versa
     */
   onLoginMethodPress = () =>  {
      this.setState({
        value:{
-          loginWithPhone: !this.state.value.loginWithPhone,
+          loginWithPhone: !this.state.loginWithPhone,
        },
-       type:this.getType(!this.state.value.loginWithPhone),
-       options:this.getOptions(!this.state.value.loginWithPhone)
+       type:this.getType(!this.state.loginWithPhone),
+       options:this.getOptions(!this.state.loginWithPhone)
      });
   }
   /**
@@ -322,7 +321,7 @@ class LoginRender extends Component {
     let loginWithPhone = null;
     let loginMethodText = null;
 
-    const loginWithEmail = this.state.value.loginWithPhone;
+    const loginWithEmail = this.state.loginWithPhone;
     if(loginWithEmail){
       loginWithPhone = <PhoneNumberPicker countryHint={{name: 'United States', cca2: 'US', callingCode:"1"}}
                        onChange={this.PhoneNumberPickerChanged.bind(this)}/>;
@@ -371,6 +370,7 @@ class LoginRender extends Component {
                  <View style={{width:width-80,marginTop:10}}>
                    <t.form.Form
                      ref="form"
+                     value={this.state.value}
                      type={this.state.type}
                      options={this.state.options}
                    />
